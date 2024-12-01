@@ -21,10 +21,10 @@ func _process(delta: float) -> void:
     var target = get_collider()
     
     if target != cur_target:
-        if target != null and target is not Interactible:
+        if target != null and target is not Interactible_sb and target is not Interactible_rb:
             cur_target = null
             interactible_unhovered.emit()
-        elif target is Interactible:
+        elif target is Interactible_rb or target is Interactible_sb:
             cur_target = target
             interactible_hovered.emit(cur_target)
 
@@ -34,7 +34,7 @@ func _input(event: InputEvent) -> void:
         if pickup.is_picked_up():
             var picked_interactible = pickup.get_pickable()
             pickup.release_interactible()
-            if cur_target is Interactible:
+            if cur_target is Interactible_rb or cur_target is Interactible_sb:
                 cur_target.interact(picked_interactible)
         else:
             if cur_target != null:

@@ -3,6 +3,8 @@ extends CharacterBody3D
 
 var BasicFPSPlayerScene : PackedScene = preload("basic_player_head.tscn")
 var addedHead = false
+@onready var footsteps_player = get_node("/root/root/FootstepsPlayer")
+@onready var is_moving = true
 
 func _enter_tree():
     
@@ -155,6 +157,14 @@ func move_player(delta):
     
     velocity.x = move_toward(velocity.x, direction.x * speed, accel * delta)
     velocity.z = move_toward(velocity.z, direction.z * speed, accel * delta)
+    
+    speed =  Vector3(input_dir.x, 0, input_dir.y).length()
+    if is_moving and speed < 0.5:
+        footsteps_player.stop()
+        is_moving = false
+    elif !is_moving and speed >= 0.5:
+        footsteps_player.play()
+        is_moving = true
 
     move_and_slide()
 

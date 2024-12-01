@@ -3,6 +3,7 @@ extends Node3D
 class_name Pickup
 
 var cur_interactible = null
+@onready var audio_player = get_node("/root/root/GlobSFXAudioPlayer")
 
 func pickup(inter):
     if cur_interactible != null:
@@ -27,6 +28,9 @@ func take_interactible(inter):
         if child is CollisionShape3D:
             child.disabled = true
     cur_interactible = inter
+    audio_player.stream = preload("res://audio/click-36683.mp3")
+    audio_player.play()
+    
 
 func release_interactible():
     remove_child(cur_interactible)

@@ -4,7 +4,7 @@ var placement_offset: Vector3 = Vector3(0.4, 0, 0)  # Adjust as needed
 var placement_basis: Basis = Basis().rotated(Vector3.BACK, 90).orthonormalized()
 
 var curr_build:Casing = null
-
+@onready var audio_player = get_node("/root/root/GlobSFXAudioPlayer")
 
 func _on_body_entered(body: Node3D) -> void:
     if body is Casing:
@@ -18,6 +18,8 @@ func _on_body_entered(body: Node3D) -> void:
         #get_tree().root.add_child(body)
         #body.release()
         curr_build = body
+        audio_player.stream = preload("res://audio/metal-hit-95-200424.mp3")
+        audio_player.play()
         print("Casing placed.")
         
 

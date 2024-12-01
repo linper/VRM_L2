@@ -1,4 +1,4 @@
-extends Interactible
+extends Interactible_rb
 
 class_name Pickable
 

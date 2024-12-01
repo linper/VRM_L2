@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=3 uid="uid://dhd1n0ed1eqks"]
+[gd_scene load_steps=95 format=3 uid="uid://dhd1n0ed1eqks"]
 
 [ext_resource type="PackedScene" uid="uid://kmyakts4l64t" path="res://addons/Basic FPS Player/Src/basic_player_head.tscn" id="1_g7i25"]
 [ext_resource type="Script" path="res://addons/Basic FPS Player/Src/basic_player_startup.gd" id="1_qukxv"]
@@ -9,10 +9,14 @@
 [ext_resource type="Script" path="res://scripts/Casing.gd" id="7_5y1dx"]
 [ext_resource type="Script" path="res://scenes/desk_area.gd" id="7_22oy3"]
 [ext_resource type="Script" path="res://scripts/Cannon.gd" id="7_hgc8w"]
+[ext_resource type="AudioStream" uid="uid://cqn65bt6xryeg" path="res://audio/electric-hum-141075.mp3" id="7_t6wkd"]
 [ext_resource type="Script" path="res://scripts/barrel.gd" id="8_agvf6"]
 [ext_resource type="Script" path="res://scripts/Projectile.gd" id="8_s24ii"]
 [ext_resource type="Script" path="res://scripts/Detonator.gd" id="9_sbyke"]
 [ext_resource type="Script" path="res://scripts/Propellant.gd" id="10_aiply"]
+[ext_resource type="Texture2D" uid="uid://5crcr0bhat8l" path="res://meshes/textures/Flare00.PNG" id="12_fpebg"]
+[ext_resource type="AudioStream" uid="uid://c4eb4uub8jfqn" path="res://audio/horror-ambient-14590.mp3" id="14_7dful"]
+[ext_resource type="AudioStream" uid="uid://cijap87sp2kag" path="res://audio/footstep-1-83098.mp3" id="17_l8o04"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7judk"]
 radius = 0.3
@@ -95,6 +99,91 @@ height = 2.2
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_hwkvq"]
 points = PackedVector3Array(-0.21746, -1.11724, -0.112698, -0.21746, -1.11724, 0.0968254, -0.147605, 1.11724, -0.0428435, 0.166639, -1.11724, -0.182512, 0.131732, -1.11724, 0.201587, 0.0968254, 1.11724, 0.131732, 0.0618774, 1.11724, -0.147605, -0.112698, 1.01247, 0.131732, -0.112698, -1.04725, -0.21746, -0.112698, -0.663171, 0.201587, 0.166639, 0.802935, -0.00793649, 0.201587, -0.872708, 0.131732, -0.0777504, 1.08225, -0.147605, 0.201587, -0.663171, -0.112698, 0.0618774, -0.663171, -0.21746, 0.0269705, 0.802935, 0.166639, 0.131732, 1.01247, -0.112698, -0.182512, -1.11724, 0.166639, -0.147605, 1.11724, 0.0618774, -0.21746, -0.593398, 0.0269705, 0.131732, 1.11724, 0.0968254, -0.147605, 0.663171, -0.112698, 0.201587, -1.11724, 0.131732, 0.131732, -0.872708, 0.201587, 0.0968254, -1.11724, -0.21746, -0.112698, -1.11724, 0.201587, 0.201587, -1.11724, -0.112698, -0.0428435, -0.628394, -0.21746, -0.147605, -0.698167, -0.182512, -0.21746, -0.872708, 0.0968254, -0.21746, -0.733162, -0.0777504, 0.0968254, 0.872708, -0.147605)
 
+[sub_resource type="Gradient" id="Gradient_janqk"]
+offsets = PackedFloat32Array(0, 0.431034, 1)
+colors = PackedColorArray(1, 1, 0.14902, 1, 0.568627, 0.121569, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_cuvii"]
+gradient = SubResource("Gradient_janqk")
+
+[sub_resource type="Curve" id="Curve_7erya"]
+max_value = 20.0
+_data = [Vector2(1e-05, 20), 0.0, 0.0, 0, 0, Vector2(1, 4.3956), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_86pas"]
+curve = SubResource("Curve_7erya")
+
+[sub_resource type="Curve" id="Curve_i4n61"]
+min_value = -1.0
+_data = [Vector2(0.039604, -0.274725), 0.0, 0.0, 0, 0, Vector2(0.980198, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_nbvir"]
+curve = SubResource("Curve_i4n61")
+
+[sub_resource type="Curve" id="Curve_w3o4v"]
+_data = [Vector2(0, 0.186813), 0.0, 0.0, 0, 0, Vector2(0.212871, 0.978022), 0.0, 0.0, 0, 0, Vector2(1, 0.032967), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_h7nrx"]
+curve = SubResource("Curve_w3o4v")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hy1br"]
+lifetime_randomness = 0.45
+emission_shape_scale = Vector3(0.1, 0.1, 0.1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, 0, -1)
+spread = 20.0
+initial_velocity_min = 10.0
+initial_velocity_max = 20.0
+gravity = Vector3(0, -1, 0)
+damping_max = 25.0
+scale_max = 2.5
+scale_curve = SubResource("CurveTexture_h7nrx")
+color_ramp = SubResource("GradientTexture1D_cuvii")
+emission_curve = SubResource("CurveTexture_86pas")
+hue_variation_min = -0.05
+hue_variation_max = 0.05
+hue_variation_curve = SubResource("CurveTexture_nbvir")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ylnch"]
+shading_mode = 0
+vertex_color_use_as_albedo = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_fowqi"]
+material = SubResource("StandardMaterial3D_ylnch")
+size = Vector3(0.03, 0.03, 0.03)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xkeek"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("12_fpebg")
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+grow_amount = 8.198
+
+[sub_resource type="Curve" id="Curve_tjpfc"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.316832, 0.461538), -2.16429, -2.16429, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_vsli0"]
+curve = SubResource("Curve_tjpfc")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_kdmqv"]
+gravity = Vector3(0, 0, 0)
+scale_min = 6.0
+scale_max = 6.0
+scale_curve = SubResource("CurveTexture_vsli0")
+
+[sub_resource type="QuadMesh" id="QuadMesh_gnot6"]
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oyv1h"]
 albedo_color = Color(0.664318, 0.438705, 0.26703, 1)
 metallic_specular = 1.0
@@ -149,6 +238,66 @@ height = 0.15
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_vmdqp"]
 points = PackedVector3Array(-0.0386016, -0.0726774, -0.0635856, 0.00679528, -0.065681, 0.0724776, -0.00678306, -0.0656775, 0.0724737, 0.0181416, 0.0725721, -0.036286, 0.0709745, -0.0732575, -0.0228795, -0.0383265, 0.0721596, 0.0135193, 0.0338406, 0.0722082, 0.0225615, -0.0709722, -0.0732671, 0.0228924, 0.0589603, -0.0725593, 0.0453513, 0.0228915, -0.0732691, -0.0709741, -0.0338418, 0.0722057, -0.0225607, -0.0181436, 0.0725708, 0.0362854, -0.0709734, -0.0732684, -0.0228928, -0.0453529, -0.0725753, 0.0589639, -0.00675171, 0.0698791, -0.0405745, 0.0405741, 0.0698815, -0.00675088, 0.0733303, -0.0733326, 0.0137418, 0.0135182, 0.0721608, 0.0383266, 0.0527343, -0.0733797, -0.0527363, 0.0342124, -0.0730015, 0.0661559, -0.0137385, -0.0733241, -0.0733241, 0.0338406, 0.0722082, -0.0225615, -0.0452574, 0.0520483, -0.00225434, -0.0589642, -0.0725754, -0.0453525, -0.0228935, -0.0732681, 0.0709731, -0.0589677, -0.0725797, 0.0453552, -0.0225616, 0.0722059, -0.0338412, -0.0724821, -0.0656979, 0.0067841, -0.00675187, 0.0698807, 0.0405754, -0.029184, 0.0695898, 0.0291833, 0.00679485, -0.0656769, -0.072473, 0.0267847, 0.0625107, 0.0334864)
 
+[sub_resource type="Gradient" id="Gradient_njkyq"]
+offsets = PackedFloat32Array(0, 0.431034, 1)
+colors = PackedColorArray(1, 1, 0.14902, 1, 0.568627, 0.121569, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5jy8g"]
+gradient = SubResource("Gradient_njkyq")
+
+[sub_resource type="Curve" id="Curve_44ak6"]
+max_value = 1000.0
+_data = [Vector2(0, 1000), 0.0, 0.0, 0, 0, Vector2(1, 8.79121), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_rtd4l"]
+curve = SubResource("Curve_44ak6")
+
+[sub_resource type="Curve" id="Curve_mcm6v"]
+min_value = -1.0
+_data = [Vector2(0.039604, -0.274725), 0.0, 0.0, 0, 0, Vector2(0.980198, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_tkm5s"]
+curve = SubResource("Curve_mcm6v")
+
+[sub_resource type="Curve" id="Curve_4oik6"]
+_data = [Vector2(0, 0.186813), 0.0, 0.0, 0, 0, Vector2(0.212871, 0.978022), 0.0, 0.0, 0, 0, Vector2(1, 0.032967), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_u76hi"]
+curve = SubResource("Curve_4oik6")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_3ohyk"]
+lifetime_randomness = 0.45
+emission_shape_scale = Vector3(0.1, 0.1, 0.1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+spread = 180.0
+initial_velocity_min = 5.0
+initial_velocity_max = 60.0
+damping_max = 15.0
+scale_max = 10.0
+scale_curve = SubResource("CurveTexture_u76hi")
+color_ramp = SubResource("GradientTexture1D_5jy8g")
+emission_curve = SubResource("CurveTexture_rtd4l")
+hue_variation_min = -0.05
+hue_variation_max = 0.05
+hue_variation_curve = SubResource("CurveTexture_tkm5s")
+
+[sub_resource type="Curve" id="Curve_2tcxl"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.316832, 0.461538), -2.16429, -2.16429, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_ifbad"]
+curve = SubResource("Curve_2tcxl")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_egfbo"]
+gravity = Vector3(0, 0, 0)
+scale_min = 1000.0
+scale_max = 1000.0
+scale_curve = SubResource("CurveTexture_ifbad")
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3220t"]
 albedo_color = Color(0.421188, 0.0494078, 0.127501, 1)
 
@@ -176,6 +325,37 @@ size = Vector3(1.5, 0.02, 0.6)
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_tkb53"]
 points = PackedVector3Array(0.761756, 0.0257096, 0.307143, -0.761756, -0.0219001, -0.311905, -0.761756, 0.0257096, -0.311905, 0.761756, -0.0219001, -0.311905, -0.761756, -0.0219001, 0.307143, -0.761756, 0.0257096, 0.307143, 0.761756, 0.0257096, -0.311905, 0.761756, -0.0219001, 0.307143)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_l8alx"]
+emission_shape_scale = Vector3(20, 20, 20)
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+direction = Vector3(0, -1, 0)
+spread = 4.348
+initial_velocity_min = 8.0
+initial_velocity_max = 15.0
+
+[sub_resource type="Curve" id="Curve_5fhol"]
+max_value = 0.1
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.25641, 0.0384615), 0.0, 0.0, 0, 0, Vector2(1, 0.0021978), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j1ovr"]
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+use_particle_trails = true
+
+[sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_1aslh"]
+material = SubResource("StandardMaterial3D_j1ovr")
+curve = SubResource("Curve_5fhol")
+
+[sub_resource type="Environment" id="Environment_gbfis"]
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.2
+volumetric_fog_albedo = Color(0, 0, 0, 1)
+volumetric_fog_emission_energy = 0.0
+volumetric_fog_ambient_inject = 0.9
 
 [node name="root" type="Node3D"]
 
@@ -233,7 +413,7 @@ shape = SubResource("CapsuleShape3D_7judk")
 [node name="EnvObj" type="Node" parent="."]
 
 [node name="BaseMesh" type="MeshInstance3D" parent="EnvObj"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.155661, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0156329, -0.12348, -0.0237416)
 mesh = SubResource("BoxMesh_7bmmh")
 skeleton = NodePath("../..")
 
@@ -585,6 +765,13 @@ mesh = SubResource("CylinderMesh_qr5wc")
 transform = Transform3D(0.990567, 0.13703, 4.12328e-10, -0.13703, 0.990567, 5.98976e-09, 4.12328e-10, -5.98976e-09, 1, 0.00304461, 0.0596745, 0)
 shape = SubResource("ConvexPolygonShape3D_ssoo8")
 
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="EnvObj/StaticBody3D"]
+stream = ExtResource("7_t6wkd")
+attenuation_model = 2
+volume_db = -30.0
+unit_size = 5.0
+autoplay = true
+
 [node name="Cannon" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06, -0.301)
 script = ExtResource("7_hgc8w")
@@ -631,6 +818,38 @@ shape = SubResource("ConvexPolygonShape3D_hwkvq")
 
 [node name="BarrelEnd" type="Marker3D" parent="Cannon/CannonYaw/CannonBarrel"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -1.7)
+
+[node name="BarrelAudioPlayer" type="AudioStreamPlayer3D" parent="Cannon/CannonYaw/CannonBarrel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.6487)
+volume_db = 5.0
+emission_angle_enabled = true
+emission_angle_degrees = 0.1
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="Cannon/CannonYaw/CannonBarrel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.62255)
+emitting = false
+amount = 100
+lifetime = 1.5
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_hy1br")
+draw_pass_1 = SubResource("BoxMesh_fowqi")
+
+[node name="Flash" type="GPUParticles3D" parent="Cannon/CannonYaw/CannonBarrel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.88897)
+material_override = SubResource("StandardMaterial3D_xkeek")
+emitting = false
+amount = 1
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_kdmqv")
+draw_pass_1 = SubResource("QuadMesh_gnot6")
+
+[node name="CannonMovementAudioPlayer" type="AudioStreamPlayer3D" parent="Cannon"]
+attenuation_model = 2
+volume_db = -15.0
+unit_size = 7.0
 
 [node name="Casing" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.997498, 0.853423, 6.44695)
@@ -679,6 +898,30 @@ shape = SubResource("ConvexPolygonShape3D_vmdqp")
 [node name="SnapPointA" type="Marker3D" parent="Projectile"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
 
+[node name="ProjectileAudioPlayer" type="AudioStreamPlayer3D" parent="Projectile"]
+volume_db = 40.0
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="Projectile"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.192218, 0)
+emitting = false
+amount = 500
+lifetime = 1.5
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_3ohyk")
+draw_pass_1 = SubResource("BoxMesh_fowqi")
+
+[node name="Flash" type="GPUParticles3D" parent="Projectile"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.16352, 0)
+material_override = SubResource("StandardMaterial3D_xkeek")
+emitting = false
+amount = 1
+lifetime = 0.2
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_egfbo")
+draw_pass_1 = SubResource("QuadMesh_gnot6")
+
 [node name="Detonator" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.09325, 0.894349, 6.38817)
 script = ExtResource("9_sbyke")
@@ -714,6 +957,30 @@ skeleton = NodePath("../../EnvObj")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DeskArea"]
 shape = SubResource("ConvexPolygonShape3D_tkb53")
+
+[node name="GlobAmbientAudioPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("14_7dful")
+volume_db = -20.0
+autoplay = true
+
+[node name="GlobSFXAudioPlayer" type="AudioStreamPlayer" parent="."]
+volume_db = -10.0
+
+[node name="Rain" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.735348, 0)
+amount = 50
+randomness = 1.0
+trail_enabled = true
+process_material = SubResource("ParticleProcessMaterial_l8alx")
+draw_pass_1 = SubResource("RibbonTrailMesh_1aslh")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_gbfis")
+
+[node name="FootstepsPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("17_l8o04")
+volume_db = -20.0
+autoplay = true
 
 [connection signal="interactible_hovered" from="Basic FPS Player/Head/RayCast3D" to="Basic FPS Player/Control/InteractionLabel" method="show_interactible_text"]
 [connection signal="interactible_unhovered" from="Basic FPS Player/Head/RayCast3D" to="Basic FPS Player/Control/InteractionLabel" method="hide_interactible_text"]

@@ -1,10 +1,11 @@
-extends Interactible
+extends Interactible_sb
 
 class_name Cannon
 
 @onready var pad_joint = get_node(".")
 @onready var yaw_joint = get_node("./CannonYaw")
 @onready var pitch_joint = get_node("./CannonYaw/CannonBarrel")
+@onready var audio_player = $CannonMovementAudioPlayer
 
 var target_x_pos = 0
 var target_z_pos = 0
@@ -33,6 +34,8 @@ func mod_x(mod):
     var cur_pos = pad_joint.position
     cur_pos[0] = target_x_pos
     pad_joint.position = cur_pos
+    audio_player.stream = preload("res://audio/robotic-arm-75154-cut-3.mp3")
+    audio_player.play()
         
 func mod_z(mod):
     if target_z_pos + mod > max_z_pos:
@@ -45,6 +48,8 @@ func mod_z(mod):
     var cur_pos = pad_joint.position
     cur_pos[2] = target_z_pos
     pad_joint.position = cur_pos
+    audio_player.stream = preload("res://audio/robotic-arm-75154-cut-3.mp3")
+    audio_player.play()
     
 func mod_yaw_deg(mod):
     if target_yaw_angle + deg_to_rad(mod) > max_yaw_angle:
@@ -56,6 +61,8 @@ func mod_yaw_deg(mod):
         
     #yaw_joint.global_transform.basis = Basis().rotated(Vector3(0,1,0), target_yaw_angle).orthonormalized()
     yaw_joint.rotation = Vector3(0,target_yaw_angle,0)
+    audio_player.stream = preload("res://audio/robotic-arm-75154-cut-2.mp3")
+    audio_player.play()
 
 func mod_pitch_deg(mod):
     if target_pitch_angle + deg_to_rad(mod) > max_pitch_angle:
@@ -67,6 +74,8 @@ func mod_pitch_deg(mod):
         
     #pitch_joint.global_transform.basis = Basis().rotated(Vector3(1,0,0), target_pitch_angle).orthonormalized()
     pitch_joint.rotation = Vector3(target_pitch_angle,0,0)
+    audio_player.stream = preload("res://audio/robotic-arm-75154-cut-1.mp3")
+    audio_player.play()
     
 func fire():
     pitch_joint.fire()

@@ -1,6 +1,6 @@
-extends PhysicsBody3D
+extends StaticBody3D
 
-class_name Interactible
+class_name Interactible_sb
 
 func interact(picked):
     pass

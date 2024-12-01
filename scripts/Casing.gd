@@ -7,7 +7,7 @@ class_name Casing
 
 @export var cur_projectile = null
 @export var cur_detonator = null
-
+@onready var audio_player = get_node("/root/root/GlobSFXAudioPlayer")
 
 func add_propellant(propellant):
     if !is_stable:
@@ -25,6 +25,8 @@ func add_propellant(propellant):
     has_propellant = true
     propellant.get_parent().remove_child(propellant)
     propellant.queue_free()
+    audio_player.stream = preload("res://audio/hit-by-a-wood-230542.mp3")
+    audio_player.play()
     print("Propelant added.")
         
 
@@ -47,6 +49,8 @@ func add_projectile(projectile):
     projectile.freeze = true
     projectile.pickup_disabled = true
     cur_projectile = projectile
+    audio_player.stream = preload("res://audio/metal-beaten-sfx-230501.mp3")
+    audio_player.play()
     print("Projectile added.")
             
 
@@ -72,11 +76,14 @@ func add_detonator(detonator):
     detonator.freeze = true
     detonator.pickup_disabled = true
     cur_detonator = detonator
+    audio_player.stream = preload("res://audio/killswitch-being-turned-off-47862.mp3")
+    audio_player.play()
     print("Detonator added.")
     
     
 func interact(picked):
     print("Casing interacted. Has pickable:" + picked.name)
+
     
     if picked is Projectile:
         add_projectile(picked)      
